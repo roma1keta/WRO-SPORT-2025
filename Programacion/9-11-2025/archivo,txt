@@ -1,0 +1,47 @@
+#include <ESP32Servo.h>
+
+Servo myservo;
+int servoPin = 18;   // 👈 cambiamos a A2 (más seguro que el 19)
+int rele =2;//pushboton2
+int pos = 0;
+int luz =A2;//19;
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(rele,OUTPUT);
+  pinMode(luz,INPUT);
+  pinMode(13,OUTPUT);
+  Serial.println("Iniciando servo...");
+
+  myservo.attach(servoPin, 500, 2400);  // rango típico SG90
+  delay(1000);
+  myservo.write(160);  // centra el servo, cierraa compuerta
+  Serial.println("Servo conectado al pin 5");
+  digitalWrite(rele,0);
+}
+
+void loop() {
+    
+    //myservo.write(180);  // centra el servo
+    //delay(1000);
+    //myservo.write(90);  // centra el servo<<<<<<<<<<<<<<<<<<
+    //delay(1000);
+ float estado = analogRead(luz);
+
+  Serial.println(estado);
+  if (estado>=210 && estado <=1000){//naranja{
+    myservo.write(160);
+    digitalWrite(rele,1);
+    delay(10000);
+    digitalWrite(rele,0);
+    
+    
+  }
+  if(estado<=210){
+   digitalWrite(rele,0);
+   myservo.write(90);
+   delay(4000);
+   myservo.write(160);
+   digitalWrite(rele,1);
+  }
+}
